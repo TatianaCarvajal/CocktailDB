@@ -8,5 +8,5 @@
 import Foundation
 
 protocol CocktailServiceProtocol {
-    
+    func fetchCocktailCategories() async throws -> CategoriesResponse
 }
