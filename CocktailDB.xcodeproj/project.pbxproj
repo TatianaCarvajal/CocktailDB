@@ -15,6 +15,9 @@
 		7521BF762C20EE6200C29065 /* CocktailDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF752C20EE6200C29065 /* CocktailDBTests.swift */; };
 		7521BF802C20EE6200C29065 /* CocktailDBUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF7F2C20EE6200C29065 /* CocktailDBUITests.swift */; };
 		7521BF822C20EE6200C29065 /* CocktailDBUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF812C20EE6200C29065 /* CocktailDBUITestsLaunchTests.swift */; };
+		7521BF8F2C20F71600C29065 /* CocktailGridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF8E2C20F71600C29065 /* CocktailGridViewModel.swift */; };
+		7521BF972C20F85400C29065 /* CocktailServiceFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF962C20F85400C29065 /* CocktailServiceFacade.swift */; };
+		7521BF992C20F87000C29065 /* CocktailServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF982C20F86F00C29065 /* CocktailServiceProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,9 @@
 		7521BF7B2C20EE6200C29065 /* CocktailDBUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CocktailDBUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7521BF7F2C20EE6200C29065 /* CocktailDBUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailDBUITests.swift; sourceTree = "<group>"; };
 		7521BF812C20EE6200C29065 /* CocktailDBUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailDBUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		7521BF8E2C20F71600C29065 /* CocktailGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailGridViewModel.swift; sourceTree = "<group>"; };
+		7521BF962C20F85400C29065 /* CocktailServiceFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailServiceFacade.swift; sourceTree = "<group>"; };
+		7521BF982C20F86F00C29065 /* CocktailServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailServiceProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +103,12 @@
 		7521BF5D2C20EE6100C29065 /* CocktailDB */ = {
 			isa = PBXGroup;
 			children = (
+				7521BF952C20F79C00C29065 /* Controller */,
+				7521BF942C20F78E00C29065 /* ViewModel */,
+				7521BF912C20F73000C29065 /* Models */,
+				7521BF902C20F71D00C29065 /* Service */,
 				7521BF5E2C20EE6100C29065 /* AppDelegate.swift */,
 				7521BF602C20EE6100C29065 /* SceneDelegate.swift */,
-				7521BF622C20EE6100C29065 /* ViewController.swift */,
 				7521BF672C20EE6200C29065 /* Assets.xcassets */,
 				7521BF692C20EE6200C29065 /* LaunchScreen.storyboard */,
 				7521BF6C2C20EE6200C29065 /* Info.plist */,
@@ -122,6 +131,38 @@
 				7521BF812C20EE6200C29065 /* CocktailDBUITestsLaunchTests.swift */,
 			);
 			path = CocktailDBUITests;
+			sourceTree = "<group>";
+		};
+		7521BF902C20F71D00C29065 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				7521BF962C20F85400C29065 /* CocktailServiceFacade.swift */,
+				7521BF982C20F86F00C29065 /* CocktailServiceProtocol.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		7521BF912C20F73000C29065 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7521BF942C20F78E00C29065 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				7521BF8E2C20F71600C29065 /* CocktailGridViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		7521BF952C20F79C00C29065 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7521BF622C20EE6100C29065 /* ViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,6 +297,9 @@
 			files = (
 				7521BF632C20EE6100C29065 /* ViewController.swift in Sources */,
 				7521BF5F2C20EE6100C29065 /* AppDelegate.swift in Sources */,
+				7521BF8F2C20F71600C29065 /* CocktailGridViewModel.swift in Sources */,
+				7521BF992C20F87000C29065 /* CocktailServiceProtocol.swift in Sources */,
+				7521BF972C20F85400C29065 /* CocktailServiceFacade.swift in Sources */,
 				7521BF612C20EE6100C29065 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
