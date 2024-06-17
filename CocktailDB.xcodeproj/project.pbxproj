@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		7521BF5F2C20EE6100C29065 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF5E2C20EE6100C29065 /* AppDelegate.swift */; };
 		7521BF612C20EE6100C29065 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF602C20EE6100C29065 /* SceneDelegate.swift */; };
-		7521BF632C20EE6100C29065 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF622C20EE6100C29065 /* ViewController.swift */; };
+		7521BF632C20EE6100C29065 /* CocktailGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF622C20EE6100C29065 /* CocktailGridViewController.swift */; };
 		7521BF682C20EE6200C29065 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7521BF672C20EE6200C29065 /* Assets.xcassets */; };
 		7521BF6B2C20EE6200C29065 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 7521BF6A2C20EE6200C29065 /* Base */; };
 		7521BF762C20EE6200C29065 /* CocktailDBTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7521BF752C20EE6200C29065 /* CocktailDBTests.swift */; };
@@ -44,7 +44,7 @@
 		7521BF5B2C20EE6100C29065 /* CocktailDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CocktailDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7521BF5E2C20EE6100C29065 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7521BF602C20EE6100C29065 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		7521BF622C20EE6100C29065 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		7521BF622C20EE6100C29065 /* CocktailGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailGridViewController.swift; sourceTree = "<group>"; };
 		7521BF672C20EE6200C29065 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7521BF6A2C20EE6200C29065 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7521BF6C2C20EE6200C29065 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -169,7 +169,7 @@
 		7521BF952C20F79C00C29065 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				7521BF622C20EE6100C29065 /* ViewController.swift */,
+				7521BF622C20EE6100C29065 /* CocktailGridViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -305,7 +305,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7521BF9D2C20FBC600C29065 /* ServiceError.swift in Sources */,
-				7521BF632C20EE6100C29065 /* ViewController.swift in Sources */,
+				7521BF632C20EE6100C29065 /* CocktailGridViewController.swift in Sources */,
 				7521BF9F2C20FC6400C29065 /* Cocktail.swift in Sources */,
 				7521BF5F2C20EE6100C29065 /* AppDelegate.swift in Sources */,
 				7521BF8F2C20F71600C29065 /* CocktailGridViewModel.swift in Sources */,
