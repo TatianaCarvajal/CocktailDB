@@ -26,7 +26,7 @@ class CocktailGridViewModel {
     func fetchCocktailCategories() async {
         state = .loading
         do {
-            var categories = try await service.fetchCocktailCategories()
+            let categories = try await service.fetchCocktailCategories()
             state = .loadedCategories(categories)
         }
         catch {

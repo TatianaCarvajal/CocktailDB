@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CocktailCategory: Codable {
+struct CocktailCategory: Codable, Equatable {
     var category: String
     
     enum CodingKeys: String, CodingKey {
@@ -15,6 +15,6 @@ struct CocktailCategory: Codable {
     }
 }
 
-struct CategoriesResponse: Codable {
+struct CategoriesResponse: Codable, Equatable {
     let drinks: [CocktailCategory]
 }
