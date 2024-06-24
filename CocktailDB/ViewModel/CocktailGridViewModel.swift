@@ -33,4 +33,15 @@ class CocktailGridViewModel {
             state = .error(.noDataFound)
         }
     }
+    
+    func fetchCocktailByName(name: String) async {
+        state = .loading
+        do {
+           let drinks = try await service.fetchCoktailByName(name: name)
+            state = .loadedCocktails(drinks)
+        }
+        catch {
+            state = .error(.noDataFound)
+        }
+    }
 }

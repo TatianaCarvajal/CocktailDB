@@ -9,4 +9,5 @@ import Foundation
 
 protocol CocktailServiceProtocol {
     func fetchCocktailCategories() async throws -> CategoriesResponse
+    func fetchCoktailByName(name: String) async throws -> CocktailResponse
 }
