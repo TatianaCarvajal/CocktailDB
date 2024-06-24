@@ -11,6 +11,21 @@ import Foundation
 class CocktailServiceProtocolMock: CocktailServiceProtocol {
     var withSuccess = true
     
+    func fetchCoktailByName(name: String) async throws -> CocktailResponse {
+        if withSuccess == false {
+            throw ServiceError.noDataFound
+        } else {
+            return CocktailResponse(
+                drinks: [Drinks(
+                    id: "1502",
+                    name: "Margarita",
+                    category: "Ordinary Drink",
+                    instruction: "Shake and strain into a chilled cocktail glass."
+                )]
+            )
+        }
+    }
+    
     func fetchCocktailCategories() async throws -> CategoriesResponse {
         if withSuccess == false {
             throw ServiceError.noDataFound
