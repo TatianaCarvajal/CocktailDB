@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Drinks: Codable, Equatable {
+struct CocktailDetail: Codable, Equatable {
     var id: String
     var name: String
     var category: String
@@ -22,5 +22,5 @@ struct Drinks: Codable, Equatable {
 }
 
 struct CocktailResponse: Codable, Equatable {
-    let drinks: [Drinks]
+    let drinks: [CocktailDetail]
 }

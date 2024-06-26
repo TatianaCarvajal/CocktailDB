@@ -43,7 +43,7 @@ final class CocktailGridViewModelTests: XCTestCase {
         
         switch cocktailGridViewModel.state {
         case let .loadedCocktails(drinks):
-            XCTAssertEqual(drinks, .init(drinks: [Drinks(id: "1502", name: "Margarita", category: "Ordinary Drink", instruction: "Shake and strain into a chilled cocktail glass.")]))
+            XCTAssertEqual(drinks, .init(drinks: [CocktailDetail(id: "1502", name: "Margarita", category: "Ordinary Drink", instruction: "Shake and strain into a chilled cocktail glass.")]))
         default: XCTFail("This shouldn't happen because the mock has a default success")
         }
     }

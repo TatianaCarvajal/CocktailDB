@@ -16,7 +16,7 @@ class CocktailServiceProtocolMock: CocktailServiceProtocol {
             throw ServiceError.noDataFound
         } else {
             return CocktailResponse(
-                drinks: [Drinks(
+                drinks: [CocktailDetail(
                     id: "1502",
                     name: "Margarita",
                     category: "Ordinary Drink",
