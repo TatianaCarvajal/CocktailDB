@@ -11,7 +11,18 @@ import Foundation
 class CocktailServiceProtocolMock: CocktailServiceProtocol {
     var withSuccess = true
     
-    func fetchCoktailByName(name: String) async throws -> CocktailResponse {
+    func fetchCocktailCategories() async throws -> CategoriesResponse {
+        if withSuccess == false {
+            throw ServiceError.noDataFound
+        } else {
+            return CategoriesResponse(
+                drinks: [CocktailCategory(
+                    category: "Ordinary Drink"
+                )]
+            )
+        }
+    }
+    func fetchCocktailByName(name: String) async throws -> CocktailDB.CocktailResponse {
         if withSuccess == false {
             throw ServiceError.noDataFound
         } else {
@@ -26,13 +37,15 @@ class CocktailServiceProtocolMock: CocktailServiceProtocol {
         }
     }
     
-    func fetchCocktailCategories() async throws -> CategoriesResponse {
+    func fetchCocktailThumbnail() async throws -> CocktailThumbnailResponse {
         if withSuccess == false {
             throw ServiceError.noDataFound
         } else {
-            return CategoriesResponse(
-                drinks: [CocktailCategory(
-                    category: "Ordinary Drink"
+            return CocktailThumbnailResponse(
+                drinks: [CocktailThumbnail(
+                    id: "5962",
+                    drink: "Vodka",
+                    drinkThumb: "drinkThumb"
                 )]
             )
         }

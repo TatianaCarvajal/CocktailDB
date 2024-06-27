@@ -61,4 +61,16 @@ final class CocktailGridViewModelTests: XCTestCase {
         default: XCTFail("This shouldn't happen because the mock should always fail")
         }
     }
+    
+    func testFetchCocktailThumbnail() async {
+        let cocktailGridViewModel = CocktailGridViewModel(service: CocktailServiceProtocolMock())
+        
+        await cocktailGridViewModel.fetchCocktailThumbnail()
+        
+        switch cocktailGridViewModel.state {
+        case let .loadedCocktailThumbnail(cocktailThumb):
+            XCTAssertEqual(cocktailThumb, .init(drinks: [CocktailThumbnail(id: "5962", drink: "Vodka", drinkThumb: "drinkThumb")]))
+        default: XCTFail("This shouldn't happen because the mock has a default success")
+        }
+    }
 }
