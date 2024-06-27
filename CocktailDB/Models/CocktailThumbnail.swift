@@ -18,3 +18,7 @@ struct CocktailThumbnail: Codable {
         case drinkThumb = "strDrinkThumb"
     }
 }
+
+struct CocktailThumbnailResponse: Codable {
+    let drinks: [CocktailThumbnail]
+}
