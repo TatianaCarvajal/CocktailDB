@@ -9,7 +9,7 @@ import Foundation
 
 class CocktailServiceFacade: CocktailServiceProtocol {
     func fetchCocktailCategories() async throws -> CategoriesResponse {
-        guard let url = URL(string: "www.thecocktaildb.com/api/json/v1/1/list.php?c=list") else {
+        guard let url = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list") else {
             throw ServiceError.noDataFound
         }
         let urlRequest = URLRequest(url: url)
@@ -20,8 +20,7 @@ class CocktailServiceFacade: CocktailServiceProtocol {
     }
     
     func fetchCocktailByName(name: String) async throws -> CocktailResponse {
-        guard let url = URL(string: "www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita")
-        else {
+        guard let url = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita") else {
             throw ServiceError.noDataFound
         }
         let urlRequest = URLRequest(url: url)
@@ -31,9 +30,8 @@ class CocktailServiceFacade: CocktailServiceProtocol {
         return result
     }
     
-    func fetchCocktailThumbnail() async throws -> CocktailThumbnailResponse {
-        guard let url = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Ordinary_Drink")
-        else {
+    func fetchCocktailThumbnail(category: String) async throws -> CocktailThumbnailResponse {
+        guard let url = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=\(category)") else {
             throw ServiceError.noDataFound
         }
         let urlRequest = URLRequest(url: url)
