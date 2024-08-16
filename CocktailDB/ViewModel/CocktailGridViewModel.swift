@@ -23,7 +23,7 @@ class CocktailGridViewModel {
         }
     }
     
-    let service: CocktailServiceProtocol
+    private let service: CocktailServiceProtocol
     @Published var state = State.idle
     
     init(service: CocktailServiceProtocol) {
@@ -77,5 +77,12 @@ class CocktailGridViewModel {
         catch {
             state = .error(.noDataFound)
         }
+    }
+    
+    func getCocktailByPosition(_ pos: Int) -> CocktailThumbnail? {
+        guard let cocktail = state.model?.cocktails[pos] else {
+            return nil
+        }
+        return cocktail
     }
 }

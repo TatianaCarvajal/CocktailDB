@@ -25,12 +25,10 @@ class CategoryButton: UIButton {
     
     private func setupView() {
         setTitle(title, for: .normal)
-        titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        titleLabel?.font = UIFont.systemFont(ofSize: 18)
         setTitleColor(.black, for: .normal)
-        backgroundColor = .lightGray
-        layer.cornerRadius = 12
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.lightGray.cgColor
+        backgroundColor = .white.withAlphaComponent(0.8)
+        layer.cornerRadius = 8
         addTarget(self, action: #selector(pressed(_:)), for: .touchUpInside)
     }
     

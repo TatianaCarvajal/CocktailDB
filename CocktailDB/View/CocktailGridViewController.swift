@@ -12,6 +12,43 @@ class CocktailGridViewController: UIViewController {
     var viewModel: CocktailGridViewModel
     var cancellables = Set<AnyCancellable>()
     
+    // MARK: - UI Components
+    lazy var cocktailGrid: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let cocktailGrid = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cocktailGrid.translatesAutoresizingMaskIntoConstraints = false
+        cocktailGrid.dataSource = self
+        cocktailGrid.delegate = self
+        cocktailGrid.backgroundColor = .clear
+        cocktailGrid.register(CocktailGridViewCell.self, forCellWithReuseIdentifier: CocktailGridViewCell.identifier)
+        return cocktailGrid
+    }()
+    
+    lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search a cocktail"
+        searchBar.searchBarStyle = .minimal
+        searchBar.searchTextField.backgroundColor = .white.withAlphaComponent(0.8)
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        return searchBar
+    }()
+    
+    lazy var categoryStackView: UIStackView = {
+        let categoryStackView = UIStackView()
+        categoryStackView.translatesAutoresizingMaskIntoConstraints = false
+        categoryStackView.axis = .horizontal
+        categoryStackView.distribution = .fillEqually
+        categoryStackView.spacing = 15
+        return categoryStackView
+    }()
+    
+    var cocktailImageView: UIImageView = {
+        let cocktailImageView = UIImageView(frame: UIScreen.main.bounds)
+        cocktailImageView.image = UIImage(named: "wood.jpg")
+        cocktailImageView.contentMode = .scaleToFill
+        return cocktailImageView
+    }()
+    
     init(viewModel: CocktailGridViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -20,13 +57,13 @@ class CocktailGridViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        self.view.insertSubview(cocktailImageView, at: 0)
         self.setupSearchBarView()
         self.setupCategoryStackView()
-//        self.setupCocktailGridView()
+        self.setupCocktailGridView()
         self.setupSubscribers()
         Task {
             await self.viewModel.viewDidLoad()
@@ -47,6 +84,7 @@ class CocktailGridViewController: UIViewController {
                 case .loaded(let model):
                     print("Voy a cargar la vista con searchbar, grid, y categories")
                     self?.setupCategoryStack(categories: model.categories)
+                    self?.cocktailGrid.reloadData()
                 case .loadedCocktails(let cocktails):
                     print("tengo que a navegar al detalle")
                     break
@@ -55,38 +93,14 @@ class CocktailGridViewController: UIViewController {
             .store(in: &self.cancellables)
     }
     
-    // MARK: - UI Components
-    lazy var cocktailGrid: UICollectionView = {
-        let cocktailGrid = UICollectionView()
-        cocktailGrid.translatesAutoresizingMaskIntoConstraints = false
-        cocktailGrid.dataSource = self
-        //cocktailGrid.delegate = self
-        return cocktailGrid
-    }()
-    
-    lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "Search a cocktail"
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        self.navigationItem.hidesSearchBarWhenScrolling = false
-        return searchBar
-    }()
-    
-    lazy var categoryStackView: UIStackView = {
-        let categoryStackView = UIStackView()
-        categoryStackView.translatesAutoresizingMaskIntoConstraints = false
-        categoryStackView.axis = .horizontal
-        categoryStackView.distribution = .fillEqually
-        categoryStackView.spacing = 15
-        return categoryStackView
-    }()
-    
     // MARK: - UI Setup
     func setupCocktailGridView() {
         view.addSubview(cocktailGrid)
         NSLayoutConstraint.activate([
-            cocktailGrid.topAnchor.constraint(equalTo: view.topAnchor),
-            cocktailGrid.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            cocktailGrid.topAnchor.constraint(equalTo: categoryStackView.bottomAnchor, constant: 20),
+            cocktailGrid.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
+            cocktailGrid.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            cocktailGrid.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
     }
     
@@ -94,9 +108,9 @@ class CocktailGridViewController: UIViewController {
         view.addSubview(searchBar)
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 76),
-            searchBar.heightAnchor.constraint(equalToConstant: 40),
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            searchBar.heightAnchor.constraint(equalToConstant: 42),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12)
         ])
     }
     
@@ -107,7 +121,6 @@ class CocktailGridViewController: UIViewController {
         
         categories.forEach { cocktailCategory in
             let button = CategoryButton(title: cocktailCategory.category) { [weak self] category in
-                print("me tocaroooon soy \(category)")
                 Task {
                     await self?.viewModel.fetchCocktailThumbnail(category: category)
                 }
@@ -146,7 +159,25 @@ extension CocktailGridViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return UICollectionViewCell()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CocktailGridViewCell.identifier, for: indexPath) as? CocktailGridViewCell,
+              let cocktail = viewModel.getCocktailByPosition(indexPath.item) else {
+            return UICollectionViewCell()
+        }
+        Task {
+            await cell.configureCell(cocktail: cocktail)
+        }
+        return cell
     }
 }
 
+extension CocktailGridViewController: UICollectionViewDelegate {
+    
+}
+
+extension CocktailGridViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let innerPadding: CGFloat = 10
+        let width = (collectionView.frame.size.width - innerPadding) / 2
+        return CGSize(width: width, height: 250)
+    }
+}
