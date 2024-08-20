@@ -27,6 +27,7 @@
 		75A0D35E2C2B26610057B793 /* CocktailThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A0D35D2C2B26610057B793 /* CocktailThumbnail.swift */; };
 		75A6CFF42C4F0DEF00E65A88 /* CategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A6CFF32C4F0DEF00E65A88 /* CategoryButton.swift */; };
 		75C5DB7F2C5996EF005BEAF2 /* CocktailGridViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C5DB7E2C5996EF005BEAF2 /* CocktailGridViewCell.swift */; };
+		75E3BC2E2C755E3D00BED82D /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E3BC2D2C755E3D00BED82D /* SpinnerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		75A0D35D2C2B26610057B793 /* CocktailThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailThumbnail.swift; sourceTree = "<group>"; };
 		75A6CFF32C4F0DEF00E65A88 /* CategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButton.swift; sourceTree = "<group>"; };
 		75C5DB7E2C5996EF005BEAF2 /* CocktailGridViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailGridViewCell.swift; sourceTree = "<group>"; };
+		75E3BC2D2C755E3D00BED82D /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +190,7 @@
 				7521BF622C20EE6100C29065 /* CocktailGridViewController.swift */,
 				75A6CFF32C4F0DEF00E65A88 /* CategoryButton.swift */,
 				75C5DB7E2C5996EF005BEAF2 /* CocktailGridViewCell.swift */,
+				75E3BC2D2C755E3D00BED82D /* SpinnerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				7521BF5F2C20EE6100C29065 /* AppDelegate.swift in Sources */,
 				7521BF8F2C20F71600C29065 /* CocktailGridViewModel.swift in Sources */,
 				7521BF9B2C20F99A00C29065 /* CocktailCategory.swift in Sources */,
+				75E3BC2E2C755E3D00BED82D /* SpinnerView.swift in Sources */,
 				75C5DB7F2C5996EF005BEAF2 /* CocktailGridViewCell.swift in Sources */,
 				75994A0E2C3F28A100D97EFE /* CocktailGridModel.swift in Sources */,
 				75A0D35E2C2B26610057B793 /* CocktailThumbnail.swift in Sources */,

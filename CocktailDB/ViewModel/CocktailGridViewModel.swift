@@ -9,7 +9,6 @@ import Foundation
 
 class CocktailGridViewModel {
     enum State {
-        case loading
         case error(ServiceError)
         case idle
         case loaded(CocktailGridModel)
@@ -25,13 +24,14 @@ class CocktailGridViewModel {
     
     private let service: CocktailServiceProtocol
     @Published var state = State.idle
+    @Published var isLoading = false
     
     init(service: CocktailServiceProtocol) {
         self.service = service
     }
     
     func viewDidLoad() async {
-        state = .loading
+        isLoading = true
         do {
             let categories = try await service.fetchCocktailCategories()
             guard let firstCategory = categories.drinks.first else {
@@ -49,10 +49,11 @@ class CocktailGridViewModel {
         catch {
             state = .error(.noDataFound)
         }
+        isLoading = false
     }
     
     func fetchCocktailByName(name: String) async {
-        state = .loading
+        isLoading = true
         do {
             let drinks = try await service.fetchCocktailByName(name: name)
             state = .loadedCocktails(drinks)
@@ -60,11 +61,12 @@ class CocktailGridViewModel {
         catch {
             state = .error(.noDataFound)
         }
+        isLoading = false
     }
     
     func fetchCocktailThumbnail(category: String) async {
         let oldCategory = state.model
-        state = .loading
+        isLoading = true
         do {
             let drinks = try await service.fetchCocktailThumbnail(category: category)
             state = .loaded(
@@ -77,6 +79,7 @@ class CocktailGridViewModel {
         catch {
             state = .error(.noDataFound)
         }
+        isLoading = false
     }
     
     func getCocktailByPosition(_ pos: Int) -> CocktailThumbnail? {

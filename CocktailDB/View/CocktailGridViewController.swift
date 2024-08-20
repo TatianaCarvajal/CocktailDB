@@ -42,13 +42,20 @@ class CocktailGridViewController: UIViewController {
         return categoryStackView
     }()
     
-    var cocktailImageView: UIImageView = {
+    lazy var cocktailImageView: UIImageView = {
         let cocktailImageView = UIImageView(frame: UIScreen.main.bounds)
         cocktailImageView.image = UIImage(named: "wood.jpg")
         cocktailImageView.contentMode = .scaleToFill
         return cocktailImageView
     }()
     
+    lazy var loaderView: SpinnerView = {
+        let loaderView = SpinnerView()
+        loaderView.translatesAutoresizingMaskIntoConstraints = false
+        return loaderView
+    }()
+    
+    // MARK: - Init
     init(viewModel: CocktailGridViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -57,6 +64,7 @@ class CocktailGridViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //MARK: - Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,8 +83,6 @@ class CocktailGridViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
                 switch value {
-                case .loading:
-                    print("Voy a mostrar estado de cargando")
                 case .error(let error):
                     print("Voy a mostrar estado de error")
                 case .idle:
@@ -89,6 +95,13 @@ class CocktailGridViewController: UIViewController {
                     print("tengo que a navegar al detalle")
                     break
                 }
+            }
+            .store(in: &self.cancellables)
+        
+        self.viewModel.$isLoading
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                value ? self?.showLoader() : self?.hideLoader()
             }
             .store(in: &self.cancellables)
     }
@@ -149,6 +162,23 @@ class CocktailGridViewController: UIViewController {
             categoryStackView.trailingAnchor.constraint(equalTo: categoriesScrollView.trailingAnchor),
             categoryStackView.heightAnchor.constraint(equalTo: categoriesScrollView.heightAnchor)
         ])
+    }
+    
+    func showLoader() {
+        view.addSubview(loaderView)
+        loaderView.showLoader()
+        NSLayoutConstraint.activate([
+            loaderView.topAnchor.constraint(equalTo: view.topAnchor),
+            loaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loaderView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    func hideLoader() {
+        loaderView.hideLoader()
+        NSLayoutConstraint.deactivate(loaderView.constraints)
+        loaderView.removeFromSuperview()
     }
 }
 
