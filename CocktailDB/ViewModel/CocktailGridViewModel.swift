@@ -83,9 +83,13 @@ class CocktailGridViewModel {
     }
     
     func getCocktailByPosition(_ pos: Int) -> CocktailThumbnail? {
-        guard let cocktail = state.model?.cocktails[pos] else {
+        guard let cocktails = state.model?.cocktails else {
             return nil
         }
+        guard pos >= 0 && pos <= cocktails.count else {
+            return nil
+        }
+        let cocktail = cocktails[pos]
         return cocktail
     }
 }

@@ -9,10 +9,12 @@ import Foundation
 @testable import CocktailDB
 
 class CocktailServiceProtocolMock: CocktailServiceProtocol {
-    var withSuccess = true
+    var shouldGetCategoriesWork = true
+    var shouldGetByNameWork = true
+    var shouldGetThumbnailWork = true
     
     func fetchCocktailCategories() async throws -> CategoriesResponse {
-        if withSuccess == false {
+        if shouldGetCategoriesWork == false {
             throw ServiceError.noDataFound
         } else {
             return CategoriesResponse(
@@ -22,8 +24,9 @@ class CocktailServiceProtocolMock: CocktailServiceProtocol {
             )
         }
     }
+    
     func fetchCocktailByName(name: String) async throws -> CocktailDB.CocktailResponse {
-        if withSuccess == false {
+        if shouldGetByNameWork == false {
             throw ServiceError.noDataFound
         } else {
             return CocktailResponse(
@@ -37,8 +40,8 @@ class CocktailServiceProtocolMock: CocktailServiceProtocol {
         }
     }
     
-    func fetchCocktailThumbnail() async throws -> CocktailThumbnailResponse {
-        if withSuccess == false {
+    func fetchCocktailThumbnail(category: String) async throws -> CocktailThumbnailResponse {
+        if shouldGetThumbnailWork == false {
             throw ServiceError.noDataFound
         } else {
             return CocktailThumbnailResponse(
