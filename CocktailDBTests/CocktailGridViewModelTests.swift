@@ -118,4 +118,21 @@ final class CocktailGridViewModelTests: XCTestCase {
         XCTAssertEqual(cocktail?.id, "5962")
         XCTAssertEqual(cocktail?.drinkThumb, "drinkThumb")
     }
+    
+    func testGetCocktailByPositionFailureGivenNoCocktails() async {
+        let cocktailGridViewModel = CocktailGridViewModel(service: CocktailServiceProtocolMock())
+        
+        let cocktail = cocktailGridViewModel.getCocktailByPosition(0)
+        
+        XCTAssertNil(cocktail)
+    }
+    
+    func testGetCocktailByPositionFailureGivenNoValidPosition() async {
+        let cocktailGridViewModel = CocktailGridViewModel(service: CocktailServiceProtocolMock())
+        await cocktailGridViewModel.fetchCocktailThumbnail(category: "Shake")
+        
+        let cocktail = cocktailGridViewModel.getCocktailByPosition(-4)
+        
+        XCTAssertNil(cocktail)
+    }
 }
