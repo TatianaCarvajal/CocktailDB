@@ -79,27 +79,38 @@ class CocktailGridViewController: UIViewController {
     }
     
     func setupSubscribers() {
-        self.viewModel.$state
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] value in
-                switch value {
-                case .error(let error):
-                    print("Voy a mostrar estado de error")
-                case .idle:
-                    break
-                case .loaded(let model):
-                    print("Voy a cargar la vista con searchbar, grid, y categories")
-                    self?.setupCategoryStack(categories: model.categories)
-                    self?.cocktailGrid.reloadData()
-                case .loadedCocktails(let cocktails):
-                    print("tengo que a navegar al detalle")
-                    break
+        self.viewModel.$model
+            .sink { [weak self] model in
+                self?.setupCategoryStack(categories: model.categories)
+                self?.cocktailGrid.reloadData()
+            }
+            .store(in: &self.cancellables)
+        
+        self.viewModel.$destination
+            .sink { [weak self] destination in
+                switch destination {
+                case let .showErrorAlert(error):
+                    let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                    self?.present(alert, animated: true)
+                    
+                case let .showErrorScreen(error):
+                    let errorScreen = ErrorView(error.errorDescription ?? "") {
+                        Task {
+                            await self?.viewModel.viewDidLoad()
+                        }
+                    }
+                    self?.setupErrorScreen(errorView: errorScreen)
+                case let .showSearchCocktailList(cocktailList):
+                    print(cocktailList)
+                case let .showCocktailDetail(cocktailDetail):
+                    print(cocktailDetail)
+                case .none: break
                 }
             }
             .store(in: &self.cancellables)
         
         self.viewModel.$isLoading
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] value in
                 value ? self?.showLoader() : self?.hideLoader()
             }
@@ -180,12 +191,23 @@ class CocktailGridViewController: UIViewController {
         NSLayoutConstraint.deactivate(loaderView.constraints)
         loaderView.removeFromSuperview()
     }
+    
+    func setupErrorScreen(errorView: ErrorView) {
+        errorView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(errorView)
+        NSLayoutConstraint.activate([
+            errorView.topAnchor.constraint(equalTo: view.topAnchor),
+            errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
 }
 
 // MARK: - CollectionView Functions
 extension CocktailGridViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.state.model?.cocktails.count ?? 0
+        return viewModel.model.cocktails.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

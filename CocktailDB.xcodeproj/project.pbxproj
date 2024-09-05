@@ -26,6 +26,7 @@
 		75994A0E2C3F28A100D97EFE /* CocktailGridModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75994A0D2C3F28A100D97EFE /* CocktailGridModel.swift */; };
 		75A0D35E2C2B26610057B793 /* CocktailThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A0D35D2C2B26610057B793 /* CocktailThumbnail.swift */; };
 		75A6CFF42C4F0DEF00E65A88 /* CategoryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A6CFF32C4F0DEF00E65A88 /* CategoryButton.swift */; };
+		75BC47362C77F87300C9555E /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BC47352C77F87200C9555E /* ErrorView.swift */; };
 		75C5DB7F2C5996EF005BEAF2 /* CocktailGridViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C5DB7E2C5996EF005BEAF2 /* CocktailGridViewCell.swift */; };
 		75E3BC2E2C755E3D00BED82D /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E3BC2D2C755E3D00BED82D /* SpinnerView.swift */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		75994A0D2C3F28A100D97EFE /* CocktailGridModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailGridModel.swift; sourceTree = "<group>"; };
 		75A0D35D2C2B26610057B793 /* CocktailThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailThumbnail.swift; sourceTree = "<group>"; };
 		75A6CFF32C4F0DEF00E65A88 /* CategoryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryButton.swift; sourceTree = "<group>"; };
+		75BC47352C77F87200C9555E /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		75C5DB7E2C5996EF005BEAF2 /* CocktailGridViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailGridViewCell.swift; sourceTree = "<group>"; };
 		75E3BC2D2C755E3D00BED82D /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -191,6 +193,7 @@
 				75A6CFF32C4F0DEF00E65A88 /* CategoryButton.swift */,
 				75C5DB7E2C5996EF005BEAF2 /* CocktailGridViewCell.swift */,
 				75E3BC2D2C755E3D00BED82D /* SpinnerView.swift */,
+				75BC47352C77F87200C9555E /* ErrorView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				75C5DB7F2C5996EF005BEAF2 /* CocktailGridViewCell.swift in Sources */,
 				75994A0E2C3F28A100D97EFE /* CocktailGridModel.swift in Sources */,
 				75A0D35E2C2B26610057B793 /* CocktailThumbnail.swift in Sources */,
+				75BC47362C77F87300C9555E /* ErrorView.swift in Sources */,
 				7521BF992C20F87000C29065 /* CocktailServiceProtocol.swift in Sources */,
 				75A6CFF42C4F0DEF00E65A88 /* CategoryButton.swift in Sources */,
 				7521BF972C20F85400C29065 /* CocktailServiceFacade.swift in Sources */,

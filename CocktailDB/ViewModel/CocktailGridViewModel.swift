@@ -7,24 +7,36 @@
 
 import Foundation
 
+@MainActor
 class CocktailGridViewModel {
-    enum State {
-        case error(ServiceError)
-        case idle
-        case loaded(CocktailGridModel)
-        case loadedCocktails(CocktailResponse)
+    enum ErrorCase: LocalizedError {
+        case viewDidLoadFailed
+        case fetchCocktailByNameFailed
+        case fetchCocktailThumbnailFailed
         
-        var model: CocktailGridModel? {
-            guard case let .loaded(cocktailGridModel) = self else {
-                return nil
+        var errorDescription: String? {
+            switch self {
+            case .viewDidLoadFailed:
+                "Sorry, we can't show you the categories in this moment, please try again later"
+            case .fetchCocktailByNameFailed:
+                "Sorry, we can't find the cocktail that you searched, please try again later"
+            case .fetchCocktailThumbnailFailed:
+                "Sorry, something went wrong with the load, please try again later"
             }
-            return cocktailGridModel
         }
     }
     
+    enum Destination {
+        case showErrorScreen(ErrorCase)
+        case showErrorAlert(ErrorCase)
+        case showSearchCocktailList([CocktailDetail])
+        case showCocktailDetail(CocktailDetail)
+    }
+    
     private let service: CocktailServiceProtocol
-    @Published var state = State.idle
     @Published var isLoading = false
+    @Published var model = CocktailGridModel(categories: [], cocktails: [])
+    @Published var destination: Destination?
     
     init(service: CocktailServiceProtocol) {
         self.service = service
@@ -35,19 +47,15 @@ class CocktailGridViewModel {
         do {
             let categories = try await service.fetchCocktailCategories()
             guard let firstCategory = categories.drinks.first else {
-                state = .error(.noDataFound)
+                destination = .showErrorScreen(.viewDidLoadFailed)
                 return
             }
             let cocktails = try await service.fetchCocktailThumbnail(category: firstCategory.category)
-            state = .loaded(
-                .init(
-                    categories: categories.drinks,
-                    cocktails: cocktails.drinks
-                )
-            )
+            model.cocktails = cocktails.drinks
+            model.categories = categories.drinks
         }
         catch {
-            state = .error(.noDataFound)
+            destination = .showErrorScreen(.viewDidLoadFailed)
         }
         isLoading = false
     }
@@ -56,40 +64,31 @@ class CocktailGridViewModel {
         isLoading = true
         do {
             let drinks = try await service.fetchCocktailByName(name: name)
-            state = .loadedCocktails(drinks)
+            destination = .showSearchCocktailList(drinks.drinks)
         }
         catch {
-            state = .error(.noDataFound)
+            destination = .showErrorAlert(.fetchCocktailByNameFailed)
         }
         isLoading = false
     }
     
     func fetchCocktailThumbnail(category: String) async {
-        let oldCategory = state.model
         isLoading = true
-        do {
+        do { 
             let drinks = try await service.fetchCocktailThumbnail(category: category)
-            state = .loaded(
-                .init(
-                    categories: oldCategory?.categories ?? [],
-                    cocktails: drinks.drinks
-                )
-            )
+            model.cocktails = drinks.drinks
         }
         catch {
-            state = .error(.noDataFound)
+            destination = .showErrorScreen(.fetchCocktailThumbnailFailed)
         }
         isLoading = false
     }
     
     func getCocktailByPosition(_ pos: Int) -> CocktailThumbnail? {
-        guard let cocktails = state.model?.cocktails else {
+        guard pos >= 0 && pos <= model.cocktails.count else {
             return nil
         }
-        guard pos >= 0 && pos <= cocktails.count else {
-            return nil
-        }
-        let cocktail = cocktails[pos]
+        let cocktail = model.cocktails[pos]
         return cocktail
     }
 }
