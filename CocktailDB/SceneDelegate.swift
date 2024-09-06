@@ -19,7 +19,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         
         self.window = UIWindow(windowScene: scene)
-        let navigationController = UINavigationController.init(rootViewController: ViewController())
+        let navigationController = UINavigationController.init(
+            rootViewController: CocktailGridViewController(
+                viewModel: CocktailGridViewModel(
+                    service: CocktailServiceFacade()
+                )
+            )
+        )
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
     }
