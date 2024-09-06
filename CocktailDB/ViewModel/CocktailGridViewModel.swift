@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 class CocktailGridViewModel {
-    enum ErrorCase: LocalizedError {
+    enum ErrorCase: LocalizedError, Equatable {
         case viewDidLoadFailed
         case fetchCocktailByNameFailed
         case fetchCocktailThumbnailFailed
@@ -26,7 +26,7 @@ class CocktailGridViewModel {
         }
     }
     
-    enum Destination {
+    enum Destination: Equatable {
         case showErrorScreen(ErrorCase)
         case showErrorAlert(ErrorCase)
         case showSearchCocktailList([CocktailDetail])
@@ -85,6 +85,9 @@ class CocktailGridViewModel {
     }
     
     func getCocktailByPosition(_ pos: Int) -> CocktailThumbnail? {
+        guard !model.cocktails.isEmpty else {
+            return nil
+        }
         guard pos >= 0 && pos <= model.cocktails.count else {
             return nil
         }

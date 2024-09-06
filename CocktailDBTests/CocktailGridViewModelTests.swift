@@ -10,23 +10,16 @@ import XCTest
 
 final class CocktailGridViewModelTests: XCTestCase {
     
+    @MainActor
     func testFetchCocktailCategories() async {
         let cocktailGridViewModel = CocktailGridViewModel(service: CocktailServiceProtocolMock())
         
         await cocktailGridViewModel.viewDidLoad()
         
-        switch cocktailGridViewModel.state {
-        case let .loaded(model):
-            XCTAssertEqual(
-                model.categories,
-                [
-                    .init(category: "Ordinary Drink")
-                ]
-            )
-        default: XCTFail("This shouldn't happen because the mock has a default success")
-        }
+        XCTAssertEqual(cocktailGridViewModel.model.categories, [.init(category: "Ordinary Drink")])
     }
     
+    @MainActor
     func testFetchCocktailCategoriesFailure() async {
         let cocktailServiceProtocolMock = CocktailServiceProtocolMock()
         cocktailServiceProtocolMock.shouldGetCategoriesWork = false
@@ -34,35 +27,29 @@ final class CocktailGridViewModelTests: XCTestCase {
         
         await cocktailGridViewModel.viewDidLoad()
         
-        switch cocktailGridViewModel.state {
-        case let .error(error):
-            XCTAssertEqual(error, .noDataFound)
-        default: XCTFail("This shouldn't happen because the mock should always fail")
-        }
+        XCTAssertEqual(cocktailGridViewModel.destination, .showErrorScreen(.viewDidLoadFailed))
     }
     
+    @MainActor
     func testFetchDrinksByName() async {
         let cocktailGridViewModel = CocktailGridViewModel(service: CocktailServiceProtocolMock())
         
         await cocktailGridViewModel.fetchCocktailByName(name: "Margarita")
         
-        switch cocktailGridViewModel.state {
-        case let .loadedCocktails(drinks):
-            XCTAssertEqual(
-                drinks,
-                .init(
-                    drinks: [CocktailDetail(
-                        id: "1502",
-                        name: "Margarita",
-                        category: "Ordinary Drink",
-                        instruction: "Shake and strain into a chilled cocktail glass."
-                    )]
-                )
+        XCTAssertEqual(
+            cocktailGridViewModel.destination,
+            .showSearchCocktailList(
+                [CocktailDetail(
+                    id: "1502",
+                    name: "Margarita",
+                    category: "Ordinary Drink",
+                    instruction: "Shake and strain into a chilled cocktail glass."
+                )]
             )
-        default: XCTFail("This shouldn't happen because the mock has a default success")
-        }
+        )
     }
     
+    @MainActor
     func testFetchDrinksByNameFailure() async {
         let cocktailServiceProtocolMock = CocktailServiceProtocolMock()
         cocktailServiceProtocolMock.shouldGetByNameWork = false
@@ -70,30 +57,28 @@ final class CocktailGridViewModelTests: XCTestCase {
         
         await cocktailGridViewModel.fetchCocktailByName(name: "Margarita")
         
-        switch cocktailGridViewModel.state {
-        case let .error(error):
-            XCTAssertEqual(error, .noDataFound)
-        default: XCTFail("This shouldn't happen because the mock should always fail")
-        }
+        XCTAssertEqual(cocktailGridViewModel.destination, .showErrorAlert(.fetchCocktailByNameFailed))
     }
-    
+
+    @MainActor
     func testFetchCocktailThumbnail() async {
         let cocktailGridViewModel = CocktailGridViewModel(service: CocktailServiceProtocolMock())
         
         await cocktailGridViewModel.fetchCocktailThumbnail(category: "Shake")
         
-        switch cocktailGridViewModel.state {
-        case let .loaded(model):
-            XCTAssertEqual(
-                model.cocktails,
-                [
-                    CocktailThumbnail(id: "5962", drink: "Vodka", drinkThumb: "drinkThumb")
-                ]
-            )
-        default: XCTFail("This shouldn't happen because the mock has a default success")
-        }
+        XCTAssertEqual(
+            cocktailGridViewModel.model.cocktails,
+            [
+                CocktailThumbnail(
+                    id: "5962",
+                    drink: "Vodka",
+                    drinkThumb: "drinkThumb"
+                )
+            ]
+        )
     }
     
+    @MainActor
     func testFetchCocktailThumbnailFailure() async {
         let cocktailServiceProtocolMock = CocktailServiceProtocolMock()
         cocktailServiceProtocolMock.shouldGetThumbnailWork = false
@@ -101,13 +86,10 @@ final class CocktailGridViewModelTests: XCTestCase {
         
         await cocktailGridViewModel.fetchCocktailThumbnail(category: "Shake")
         
-        switch cocktailGridViewModel.state {
-        case let .error(error):
-            XCTAssertEqual(error, .noDataFound)
-        default: XCTFail("This shouldn't happen because the mock should always fail")
-        }
+        XCTAssertEqual(cocktailGridViewModel.destination, .showErrorScreen(.fetchCocktailThumbnailFailed))
     }
     
+    @MainActor
     func testGetCocktailByPosition() async {
         let cocktailGridViewModel = CocktailGridViewModel(service: CocktailServiceProtocolMock())
         await cocktailGridViewModel.fetchCocktailThumbnail(category: "Shake")
@@ -119,6 +101,7 @@ final class CocktailGridViewModelTests: XCTestCase {
         XCTAssertEqual(cocktail?.drinkThumb, "drinkThumb")
     }
     
+    @MainActor
     func testGetCocktailByPositionFailureGivenNoCocktails() async {
         let cocktailGridViewModel = CocktailGridViewModel(service: CocktailServiceProtocolMock())
         
@@ -127,6 +110,7 @@ final class CocktailGridViewModelTests: XCTestCase {
         XCTAssertNil(cocktail)
     }
     
+    @MainActor
     func testGetCocktailByPositionFailureGivenNoValidPosition() async {
         let cocktailGridViewModel = CocktailGridViewModel(service: CocktailServiceProtocolMock())
         await cocktailGridViewModel.fetchCocktailThumbnail(category: "Shake")
