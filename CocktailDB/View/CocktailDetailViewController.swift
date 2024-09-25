@@ -14,6 +14,14 @@ class CocktailDetailViewController: UIViewController {
     var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
+    let contentView = UIView()
+    
+    lazy var detailScrollView: UIScrollView = {
+        let detailScrollView = UIScrollView()
+        detailScrollView.translatesAutoresizingMaskIntoConstraints = false
+        return detailScrollView
+    }()
+    
     lazy var cocktailImageView: UIImageView = {
         let cocktailImageView = UIImageView(frame: UIScreen.main.bounds)
         cocktailImageView.image = UIImage(named: "wood.jpg")
@@ -40,7 +48,7 @@ class CocktailDetailViewController: UIViewController {
         return cocktailTitle
     }()
     
-    var cocktailInformationLabel: UILabel = {
+    lazy var cocktailInformationLabel: UILabel = {
         let cocktailInformation = UILabel()
         cocktailInformation.translatesAutoresizingMaskIntoConstraints = false
         cocktailInformation.font = .systemFont(ofSize: 20, weight: .semibold)
@@ -73,14 +81,6 @@ class CocktailDetailViewController: UIViewController {
         return cocktailStackView
     }()
     
-    
-    lazy var detailScrollView: UIScrollView = {
-        let detailScrollView = UIScrollView()
-        detailScrollView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return detailScrollView
-    }()
-    
     lazy var loaderView: SpinnerView = {
         let loaderView = SpinnerView()
         loaderView.translatesAutoresizingMaskIntoConstraints = false
@@ -100,6 +100,7 @@ class CocktailDetailViewController: UIViewController {
     //MARK: - Life cycle
     override func viewDidLoad() {
         self.setupDetailScrollView()
+        self.setupContentView()
         self.setupCocktailTitle()
         self.setupCocktailImage()
         self.setupCocktailInformation()
@@ -165,11 +166,11 @@ class CocktailDetailViewController: UIViewController {
     
     // MARK: - UI Setup
     func setupCocktailImage() {
-        detailScrollView.addSubview(cocktailImage)
+        contentView.addSubview(cocktailImage)
         NSLayoutConstraint.activate(
             [
                 cocktailImage.topAnchor.constraint(equalTo: cocktailTitleLabel.bottomAnchor, constant: 10),
-                cocktailImage.centerXAnchor.constraint(equalTo: detailScrollView.centerXAnchor),
+                cocktailImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
                 cocktailImage.widthAnchor.constraint(equalToConstant: 250),
                 cocktailImage.heightAnchor.constraint(equalToConstant: 220)
             ]
@@ -177,53 +178,52 @@ class CocktailDetailViewController: UIViewController {
     }
     
     func setupCocktailTitle() {
-        detailScrollView.addSubview(cocktailTitleLabel)
+        contentView.addSubview(cocktailTitleLabel)
         NSLayoutConstraint.activate(
             [
-                cocktailTitleLabel.topAnchor.constraint(equalTo: detailScrollView.safeAreaLayoutGuide.topAnchor),
-                cocktailTitleLabel.leadingAnchor.constraint(equalTo: detailScrollView.leadingAnchor),
-                cocktailTitleLabel.trailingAnchor.constraint(equalTo: detailScrollView.trailingAnchor),
+                cocktailTitleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+                cocktailTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                cocktailTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             ]
         )
     }
     
     func setupCocktailInformation() {
-        detailScrollView.addSubview(cocktailInformationLabel)
+        contentView.addSubview(cocktailInformationLabel)
         NSLayoutConstraint.activate(
             [
                 cocktailInformationLabel.topAnchor.constraint(equalTo: cocktailImage.bottomAnchor, constant: 20),
-                cocktailInformationLabel.leadingAnchor.constraint(equalTo: detailScrollView.leadingAnchor, constant: 20),
-                cocktailInformationLabel.trailingAnchor.constraint(equalTo: detailScrollView.trailingAnchor, constant: -20)
+                cocktailInformationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+                cocktailInformationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
             ]
         )
     }
     
     func setupIngredientsTitle() {
-        detailScrollView.addSubview(ingredientsTitleLabel)
+        contentView.addSubview(ingredientsTitleLabel)
         NSLayoutConstraint.activate(
             [
                 ingredientsTitleLabel.topAnchor.constraint(equalTo: cocktailInformationLabel.bottomAnchor, constant: 20),
-                ingredientsTitleLabel.leadingAnchor.constraint(equalTo: detailScrollView.leadingAnchor, constant: 20),
-                ingredientsTitleLabel.trailingAnchor.constraint(equalTo: detailScrollView.trailingAnchor)
+                ingredientsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+                ingredientsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
             ]
         )
         
     }
     
     func setupCocktailIngredientsStackView() {
-        detailScrollView.addSubview(cocktailIngredientsStackView)
+        contentView.addSubview(cocktailIngredientsStackView)
         NSLayoutConstraint.activate(
             [
                 cocktailIngredientsStackView.topAnchor.constraint(equalTo: ingredientsTitleLabel.bottomAnchor, constant: 20),
-                cocktailIngredientsStackView.leadingAnchor.constraint(equalTo: detailScrollView.leadingAnchor, constant: 20),
-                cocktailIngredientsStackView.trailingAnchor.constraint(equalTo: detailScrollView.trailingAnchor, constant: -20),
+                cocktailIngredientsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+                cocktailIngredientsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             ]
         )
     }
     
     
     func setupDetailScrollView() {
-        detailScrollView.insertSubview(cocktailImageView, at: 0)
         view.addSubview(detailScrollView)
         NSLayoutConstraint.activate(
             [
@@ -231,6 +231,21 @@ class CocktailDetailViewController: UIViewController {
                 detailScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 detailScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 detailScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ]
+        )
+    }
+    
+    func setupContentView() {
+        contentView.insertSubview(cocktailImageView, at: 0)
+        detailScrollView.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(
+            [
+                contentView.topAnchor.constraint(equalTo: detailScrollView.topAnchor),
+                contentView.leadingAnchor.constraint(equalTo: detailScrollView.leadingAnchor),
+                contentView.trailingAnchor.constraint(equalTo: detailScrollView.trailingAnchor),
+                contentView.bottomAnchor.constraint(equalTo: detailScrollView.bottomAnchor),
+                contentView.widthAnchor.constraint(equalTo: detailScrollView.widthAnchor)
             ]
         )
     }
