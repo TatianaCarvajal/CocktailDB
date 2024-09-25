@@ -20,7 +20,7 @@ class CocktailServiceFacade: CocktailServiceProtocol {
     }
     
     func fetchCocktailByName(name: String) async throws -> CocktailResponse {
-        guard let url = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita") else {
+        guard let url = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=\(name)") else {
             throw ServiceError.noDataFound
         }
         let urlRequest = URLRequest(url: url)
@@ -38,6 +38,17 @@ class CocktailServiceFacade: CocktailServiceProtocol {
         let (data, _) = try await URLSession.shared.data(for: urlRequest)
         let decoder = JSONDecoder()
         let result = try decoder.decode(CocktailThumbnailResponse.self, from: data)
+        return result
+    }
+    
+    func fetchCocktailDetail(id: String) async throws -> CocktailResponse {
+        guard let url = URL(string: "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=\(id)") else {
+            throw ServiceError.noDataFound
+        }
+        let urlRequest = URLRequest(url: url)
+        let (data, _) = try await URLSession.shared.data(for: urlRequest)
+        let decoder = JSONDecoder()
+        let result = try decoder.decode(CocktailResponse.self, from: data)
         return result
     }
 }

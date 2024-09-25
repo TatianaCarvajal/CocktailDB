@@ -223,7 +223,14 @@ extension CocktailGridViewController: UICollectionViewDataSource {
 }
 
 extension CocktailGridViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let id = viewModel.getCocktailByPosition(indexPath.row)?.id else {
+            return
+        }
+        let viewModel = CocktailDetailViewModel(service: CocktailServiceFacade(), id: id)
+        let viewController = CocktailDetailViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension CocktailGridViewController: UICollectionViewDelegateFlowLayout {
