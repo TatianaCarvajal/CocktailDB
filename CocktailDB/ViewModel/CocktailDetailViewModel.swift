@@ -31,5 +31,4 @@ class CocktailDetailViewModel {
         }
         isLoading = false
     }
-    
 }

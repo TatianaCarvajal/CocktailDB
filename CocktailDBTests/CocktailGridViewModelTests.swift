@@ -43,7 +43,8 @@ final class CocktailGridViewModelTests: XCTestCase {
                     id: "1502",
                     name: "Margarita",
                     category: "Ordinary Drink",
-                    instruction: "Shake and strain into a chilled cocktail glass."
+                    instruction: "Shake and strain into a chilled cocktail glass.", 
+                    drinkThumb: "drinkThumb"
                 )]
             )
         )

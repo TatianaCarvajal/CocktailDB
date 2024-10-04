@@ -12,6 +12,7 @@ class CocktailServiceProtocolMock: CocktailServiceProtocol {
     var shouldGetCategoriesWork = true
     var shouldGetByNameWork = true
     var shouldGetThumbnailWork = true
+    var shouldGetCocktailDetailWork = true
     
     func fetchCocktailCategories() async throws -> CategoriesResponse {
         if shouldGetCategoriesWork == false {
@@ -34,7 +35,8 @@ class CocktailServiceProtocolMock: CocktailServiceProtocol {
                     id: "1502",
                     name: "Margarita",
                     category: "Ordinary Drink",
-                    instruction: "Shake and strain into a chilled cocktail glass."
+                    instruction: "Shake and strain into a chilled cocktail glass.", 
+                    drinkThumb: "drinkThumb"
                 )]
             )
         }
@@ -48,6 +50,22 @@ class CocktailServiceProtocolMock: CocktailServiceProtocol {
                 drinks: [CocktailThumbnail(
                     id: "5962",
                     drink: "Vodka",
+                    drinkThumb: "drinkThumb"
+                )]
+            )
+        }
+    }
+    
+    func fetchCocktailDetail(id: String) async throws -> CocktailDB.CocktailResponse {
+        if shouldGetCocktailDetailWork == false {
+            throw ServiceError.noDataFound
+        } else {
+            return CocktailResponse(
+                drinks: [CocktailDetail(
+                    id: "5962",
+                    name: "Vodka",
+                    category: "Ordinary Drink",
+                    instruction: "Shake and strain into a chilled cocktail glass.",
                     drinkThumb: "drinkThumb"
                 )]
             )
