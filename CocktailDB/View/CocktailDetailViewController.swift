@@ -14,22 +14,17 @@ class CocktailDetailViewController: UIViewController {
     var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
-    let contentView = UIView()
+    private let contentView = UIView()
+    private let cocktailBackgroundImage = UIImage(named: "wood.jpg") ?? .init()
     
     lazy var detailScrollView: UIScrollView = {
         let detailScrollView = UIScrollView()
         detailScrollView.translatesAutoresizingMaskIntoConstraints = false
+        detailScrollView.showsVerticalScrollIndicator = false
         return detailScrollView
     }()
     
     lazy var cocktailImageView: UIImageView = {
-        let cocktailImageView = UIImageView(frame: UIScreen.main.bounds)
-        cocktailImageView.image = UIImage(named: "wood.jpg")
-        cocktailImageView.contentMode = .scaleToFill
-        return cocktailImageView
-    }()
-    
-    lazy var cocktailImage: UIImageView = {
         let cocktailImage = UIImageView()
         cocktailImage.image = UIImage(systemName: "questionMark")
         cocktailImage.clipsToBounds = true
@@ -55,7 +50,6 @@ class CocktailDetailViewController: UIViewController {
         cocktailInformation.textColor = .white
         cocktailInformation.numberOfLines = 0
         cocktailInformation.textAlignment = .justified
-        // cocktailInformation.sizeToFit()
         return cocktailInformation
     }()
     
@@ -78,6 +72,7 @@ class CocktailDetailViewController: UIViewController {
         cocktailStackView.translatesAutoresizingMaskIntoConstraints = false
         cocktailStackView.axis = .vertical
         cocktailStackView.distribution = .fillEqually
+        cocktailStackView.spacing = 10
         return cocktailStackView
     }()
     
@@ -99,6 +94,10 @@ class CocktailDetailViewController: UIViewController {
     
     //MARK: - Life cycle
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.hidesBarsOnTap = true
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.view.backgroundColor = UIColor(patternImage: cocktailBackgroundImage)
         self.setupDetailScrollView()
         self.setupContentView()
         self.setupCocktailTitle()
@@ -118,7 +117,7 @@ class CocktailDetailViewController: UIViewController {
                 return
             }
             Task {
-                await self.cocktailImage.load(url: model?.image)
+                await self.cocktailImageView.load(url: model?.image)
             }
             self.cocktailTitleLabel.text = model?.name
             self.cocktailInformationLabel.text = model?.instruction
@@ -152,6 +151,12 @@ class CocktailDetailViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
+        
+        self.viewModel.$isLoading
+            .sink { [weak self] value in
+                value ? self?.showLoader() : self?.hideLoader()
+            }
+            .store(in: &self.cancellables)
     }
     
     func createCocktailIngredientsLabel(ingredient: String) -> UILabel {
@@ -166,87 +171,88 @@ class CocktailDetailViewController: UIViewController {
     
     // MARK: - UI Setup
     func setupCocktailImage() {
-        contentView.addSubview(cocktailImage)
-        NSLayoutConstraint.activate(
-            [
-                cocktailImage.topAnchor.constraint(equalTo: cocktailTitleLabel.bottomAnchor, constant: 10),
-                cocktailImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-                cocktailImage.widthAnchor.constraint(equalToConstant: 250),
-                cocktailImage.heightAnchor.constraint(equalToConstant: 220)
-            ]
-        )
+        contentView.addSubview(cocktailImageView)
+        NSLayoutConstraint.activate([
+            cocktailImageView.topAnchor.constraint(equalTo: cocktailTitleLabel.bottomAnchor, constant: 20),
+            cocktailImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            cocktailImageView.widthAnchor.constraint(equalToConstant: 250),
+            cocktailImageView.heightAnchor.constraint(equalToConstant: 220)
+        ])
     }
     
     func setupCocktailTitle() {
         contentView.addSubview(cocktailTitleLabel)
-        NSLayoutConstraint.activate(
-            [
-                cocktailTitleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-                cocktailTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-                cocktailTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            ]
-        )
+        NSLayoutConstraint.activate([
+            cocktailTitleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            cocktailTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            cocktailTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        ])
     }
     
     func setupCocktailInformation() {
         contentView.addSubview(cocktailInformationLabel)
-        NSLayoutConstraint.activate(
-            [
-                cocktailInformationLabel.topAnchor.constraint(equalTo: cocktailImage.bottomAnchor, constant: 20),
-                cocktailInformationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-                cocktailInformationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
-            ]
-        )
+        NSLayoutConstraint.activate([
+            cocktailInformationLabel.topAnchor.constraint(equalTo: cocktailImageView.bottomAnchor, constant: 20),
+            cocktailInformationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            cocktailInformationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20)
+        ])
     }
     
     func setupIngredientsTitle() {
         contentView.addSubview(ingredientsTitleLabel)
-        NSLayoutConstraint.activate(
-            [
-                ingredientsTitleLabel.topAnchor.constraint(equalTo: cocktailInformationLabel.bottomAnchor, constant: 20),
-                ingredientsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-                ingredientsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-            ]
-        )
-        
+        NSLayoutConstraint.activate([
+            ingredientsTitleLabel.topAnchor.constraint(equalTo: cocktailInformationLabel.bottomAnchor, constant: 20),
+            ingredientsTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            ingredientsTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
     }
     
     func setupCocktailIngredientsStackView() {
         contentView.addSubview(cocktailIngredientsStackView)
-        NSLayoutConstraint.activate(
-            [
-                cocktailIngredientsStackView.topAnchor.constraint(equalTo: ingredientsTitleLabel.bottomAnchor, constant: 20),
-                cocktailIngredientsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-                cocktailIngredientsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            ]
-        )
+        NSLayoutConstraint.activate([
+            cocktailIngredientsStackView.topAnchor.constraint(equalTo: ingredientsTitleLabel.bottomAnchor, constant: 20),
+            cocktailIngredientsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            cocktailIngredientsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+        ])
     }
-    
     
     func setupDetailScrollView() {
         view.addSubview(detailScrollView)
-        NSLayoutConstraint.activate(
-            [
-                detailScrollView.topAnchor.constraint(equalTo: view.topAnchor),
-                detailScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                detailScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                detailScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ]
-        )
+        NSLayoutConstraint.activate([
+            detailScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            detailScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            detailScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            detailScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
     func setupContentView() {
-        contentView.insertSubview(cocktailImageView, at: 0)
         detailScrollView.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate(
-            [
-                contentView.topAnchor.constraint(equalTo: detailScrollView.topAnchor),
-                contentView.leadingAnchor.constraint(equalTo: detailScrollView.leadingAnchor),
-                contentView.trailingAnchor.constraint(equalTo: detailScrollView.trailingAnchor),
-                contentView.bottomAnchor.constraint(equalTo: detailScrollView.bottomAnchor),
-                contentView.widthAnchor.constraint(equalTo: detailScrollView.widthAnchor)
-            ]
-        )
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: detailScrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: detailScrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: detailScrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: detailScrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: detailScrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalTo: detailScrollView.heightAnchor)
+        ])
+    }
+    
+    func showLoader() {
+        view.addSubview(loaderView)
+        loaderView.showLoader()
+        NSLayoutConstraint.activate([
+            loaderView.topAnchor.constraint(equalTo: view.topAnchor),
+            loaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loaderView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    func hideLoader() {
+        loaderView.hideLoader()
+        NSLayoutConstraint.deactivate(loaderView.constraints)
+        loaderView.removeFromSuperview()
     }
 }
