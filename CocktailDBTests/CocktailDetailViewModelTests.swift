@@ -27,4 +27,15 @@ final class CocktailDetailViewModelTests: XCTestCase {
             )
         )
     }
+    
+    @MainActor
+    func testFetchCocktailDetailFailure() async {
+        let cocktailServiceProtocolMock = CocktailServiceProtocolMock()
+        cocktailServiceProtocolMock.shouldGetCocktailDetailWork = false
+        let cocktailDetailViewModel = CocktailDetailViewModel(service: cocktailServiceProtocolMock, id: "test")
+        
+        await cocktailDetailViewModel.fetchCocktailDetail()
+        
+        XCTAssertEqual(cocktailDetailViewModel.error, "Sorry, something went wrong with the detail, please try again later")
+    }
 }
