@@ -30,6 +30,7 @@ class CocktailGridViewController: UIViewController {
         searchBar.searchBarStyle = .minimal
         searchBar.searchTextField.backgroundColor = .white.withAlphaComponent(0.8)
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.delegate = self
         return searchBar
     }()
     
@@ -69,6 +70,8 @@ class CocktailGridViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.insertSubview(cocktailImageView, at: 0)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tap)
         self.setupSearchBarView()
         self.setupCategoryStackView()
         self.setupCocktailGridView()
@@ -76,6 +79,10 @@ class CocktailGridViewController: UIViewController {
         Task {
             await self.viewModel.viewDidLoad()
         }
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     func setupSubscribers() {
@@ -103,8 +110,6 @@ class CocktailGridViewController: UIViewController {
                     self?.setupErrorScreen(errorView: errorScreen)
                 case let .showSearchCocktailList(cocktailList):
                     print(cocktailList)
-                case let .showCocktailDetail(cocktailDetail):
-                    print(cocktailDetail)
                 case .none: break
                 }
             }
@@ -201,6 +206,17 @@ class CocktailGridViewController: UIViewController {
             errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+}
+// MARK: - SearchBar Functions
+extension CocktailGridViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        Task {
+            guard let query = searchBar.text else {
+                return
+            }
+            await viewModel.fetchCocktailByName(name: query)
+        }
     }
 }
 
