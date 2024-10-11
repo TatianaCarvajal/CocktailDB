@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 @MainActor
 class CocktailGridViewModel {
@@ -30,10 +31,10 @@ class CocktailGridViewModel {
         case showErrorScreen(ErrorCase)
         case showErrorAlert(ErrorCase)
         case showSearchCocktailList([CocktailDetail])
-        case showCocktailDetail(CocktailDetail)
     }
     
     private let service: CocktailServiceProtocol
+    private var cocktails: [CocktailThumbnail] = []
     @Published var isLoading = false
     @Published var model = CocktailGridModel(categories: [], cocktails: [])
     @Published var destination: Destination?
@@ -61,6 +62,9 @@ class CocktailGridViewModel {
     }
     
     func fetchCocktailByName(name: String) async {
+        guard !name.isEmpty else {
+            return
+        }
         isLoading = true
         do {
             let drinks = try await service.fetchCocktailByName(name: name)
