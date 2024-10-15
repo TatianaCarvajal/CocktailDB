@@ -109,7 +109,8 @@ class CocktailGridViewController: UIViewController {
                     }
                     self?.setupErrorScreen(errorView: errorScreen)
                 case let .showSearchCocktailList(cocktailList):
-                    print(cocktailList)
+                    let viewController = CocktailSearchListViewController(cocktails: cocktailList)
+                    self?.navigationController?.pushViewController(viewController, animated: true)
                 case .none: break
                 }
             }
