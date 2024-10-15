@@ -31,6 +31,7 @@
 		75BC47362C77F87300C9555E /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BC47352C77F87200C9555E /* ErrorView.swift */; };
 		75C129452CB0AB0300F82E81 /* CocktailDetailViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C129442CB0AB0300F82E81 /* CocktailDetailViewModelTests.swift */; };
 		75C5DB7F2C5996EF005BEAF2 /* CocktailGridViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C5DB7E2C5996EF005BEAF2 /* CocktailGridViewCell.swift */; };
+		75CB9DD02CB8CCF0004CC5A6 /* CocktailSearchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CB9DCF2CB8CCF0004CC5A6 /* CocktailSearchListViewController.swift */; };
 		75E3BC2E2C755E3D00BED82D /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E3BC2D2C755E3D00BED82D /* SpinnerView.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		75BC47352C77F87200C9555E /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		75C129442CB0AB0300F82E81 /* CocktailDetailViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailDetailViewModelTests.swift; sourceTree = "<group>"; };
 		75C5DB7E2C5996EF005BEAF2 /* CocktailGridViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailGridViewCell.swift; sourceTree = "<group>"; };
+		75CB9DCF2CB8CCF0004CC5A6 /* CocktailSearchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocktailSearchListViewController.swift; sourceTree = "<group>"; };
 		75E3BC2D2C755E3D00BED82D /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -203,6 +205,7 @@
 				75E3BC2D2C755E3D00BED82D /* SpinnerView.swift */,
 				75BC47352C77F87200C9555E /* ErrorView.swift */,
 				752700A92C8BC172001CF951 /* CocktailDetailViewController.swift */,
+				75CB9DCF2CB8CCF0004CC5A6 /* CocktailSearchListViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 				75A0D35E2C2B26610057B793 /* CocktailThumbnail.swift in Sources */,
 				75BC47362C77F87300C9555E /* ErrorView.swift in Sources */,
 				7521BF992C20F87000C29065 /* CocktailServiceProtocol.swift in Sources */,
+				75CB9DD02CB8CCF0004CC5A6 /* CocktailSearchListViewController.swift in Sources */,
 				75A6CFF42C4F0DEF00E65A88 /* CategoryButton.swift in Sources */,
 				752700AA2C8BC172001CF951 /* CocktailDetailViewController.swift in Sources */,
 				7521BF972C20F85400C29065 /* CocktailServiceFacade.swift in Sources */,
